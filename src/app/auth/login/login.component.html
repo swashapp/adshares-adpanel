@@ -19,52 +19,8 @@
           ap-copy
           ap-copy--large"
     >
-      Please log in to your account.
+    Use your Swash credentials to log in below
     </p>
-
-    <div class="login-buttons row justify-between">
-      <button
-        *ngIf="adsWalletAvailable"
-        class="ap-btn ap-btn-with-img ap-btn--bordered-light"
-        (click)="initWalletLogin('ADS')"
-        [disabled]="isAdsLoggingIn"
-      >
-        <img src="/assets/images/ads.svg" alt="ADS">
-        <ng-container *ngIf="!isAdsLoggingIn; else loading">
-          Log in with ADS Wallet
-        </ng-container>
-      </button>
-      <a
-        *ngIf="!adsWalletAvailable"
-        class="ap-btn ap-btn--danger"
-        href="{{ADSHARES_WALLET}}"
-        rel="noopener noreferrer nofollow"
-        target="_blank"
-      >
-        Install ADS Wallet first!
-      </a>
-      <button
-        *ngIf="ethereumAvailable"
-        class="ap-btn ap-btn-with-img ap-btn--bordered-light"
-        (click)="initWalletLogin('BSC')"
-        [disabled]="isBscLoggingIn"
-      >
-        <img src="/assets/images/metamask.svg" alt="MetaMask">
-        <ng-container *ngIf="!isBscLoggingIn; else loading">
-          Log in with MetaMask</ng-container>
-      </button>
-      <a
-        *ngIf="!ethereumAvailable"
-        class="ap-btn ap-btn--danger"
-        href="{{METAMASK_WALLET}}"
-        rel="noopener noreferrer nofollow"
-        target="_blank"
-      >
-        Install Metamask first!
-      </a>
-      <br />
-      <div class="error-msg" *ngIf="walletLoginError">{{walletLoginError}}</div>
-    </div>
 
     <form
       (ngSubmit)="login()"
