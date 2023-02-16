@@ -1,28 +1,101 @@
 @import '../../../styles.scss';
 
 .ap-login {
-  background-color: pal(light);
-
-  & .ap-form-input__box:not(:first-child) {
-    margin-top: 24px;
+  &-wrapper {
+    height: 100%;
   }
 
-  & .link-wrapper {
-    margin-top: 16px;
+  &__remember {
+    margin-top: 30px;
   }
+}
 
-  & .alternative-buttons-wrapper {
-    margin-bottom: 48px;
+h2 {
+  margin: 10px 0;
+}
+
+.block-link {
+  display: block;
+  margin: 10px 10px 10px 50px;
+}
+
+.login-buttons {
+  margin-top: 10px;
+
+  @include media(md-up) {
+    margin-top: 30px;
   }
 
   .ap-btn {
+    position: relative;
+    min-width: 220px;
     height: 42px;
     vertical-align: top;
-    text-decoration: none;
+
+    &-with-img {
+      padding-left: 40px;
+    }
 
     > img {
-      width: 24px;
-      max-height: 24px;
+      position: absolute;
+      left: 5px;
+      width: 30px;
+      max-height: 30px;
     }
+  }
+
+  .error-msg {
+    display: inline-block;
+  }
+}
+
+form {
+  margin-top: 10px;
+
+  @include media(md-up) {
+    margin-top: 30px;
+  }
+
+  .error-msg {
+    max-width: 320px;
+  }
+}
+
+.ap-btn--blue{
+  background-color: #55a8fd;
+  max-height: 46px;
+}
+.ap-form-input-login{
+  border-radius: 2px;
+  background-color: #f8f9fc;
+  border: solid 1px #eceef3;
+  padding: 13px 13px 13px 18px;
+  max-width: 320px;
+  font-size: 1rem;
+  font-family: Lato-Regular,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+.ap-link{
+  color: #55a8fd;
+}
+
+.ap-heading{
+  font-size: 4rem;
+  font-family: Lato-Black,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.11;
+}
+
+form {
+  margin-top: 10px;
+
+  @include media(md-up) {
+    margin-top: 30px;
+  }
+
+  .error-msg {
+    max-width: 320px;
   }
 }
