@@ -34,15 +34,15 @@
       </div>
     </div>
 
-    <div class="col row--gap8 links-wrapper">
-      <p class="ap-copy">
-        Learn how to use our platform -
-        <a [href]="advertiserInstructionLink" class="ap-blue" target="_blank">ADVERTISER</a> /
-        <a [href]="publisherInstructionLink" class="ap-blue" target="_blank">PUBLISHER</a>
-      </p>
-      <p class="ap-copy">
-        <a href="https://adshares.net?utm_source={{ source }}&utm_campaign=auth" target="_blank">Powered by Adshares</a>
-      </p>
+    <div class="col col-xs-12 col-lg-6 ap-auth__content ap-bg-white justify-between">
+      <div [@fadeAnimation]="getRouterOutletState(o)">
+        <router-outlet #o="outlet"></router-outlet>
+      </div>
+      <div class="row align-center justify-between">
+        <p class="ap-copy ap-copy-instructions">
+          Don't have an account? Email <a href="mailto:ads@swashapp.io">ads@swashapp.io</a> to get verified and start onboarding today.
+        </p>
+      </div>
     </div>
   </div>
 </section>

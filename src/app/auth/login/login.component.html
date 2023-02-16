@@ -1,34 +1,71 @@
-<div class="ap-login ap-auth-container" *ngIf="loginForm">
-  <ng-template #loading>
-    <mat-spinner [diameter]="16" [strokeWidth]="2" color="accent"></mat-spinner>
-  </ng-template>
+<div
+  class="
+    col
+    ap-login-wrapper"
+>
+  <div *ngIf="loginForm">
+    <ng-template #loading>
+      <mat-spinner [diameter]="16" [strokeWidth]="2"></mat-spinner>
+    </ng-template>
+    <h2
+      class="
+          ap-heading
+          ap-heading--primary"
+    >
+      Hello!
+    </h2>
+    <p
+      class="
+          ap-copy
+          ap-copy--large"
+    >
+    Use your Swash credentials to log in below
+    </p>
 
-  <form (ngSubmit)="login()" [formGroup]="loginForm" class="ap-form" data-test="auth-login-form">
-    <div *ngIf="criteriaError && loginFormSubmitted" class="error-msg">Password or email is invalid.</div>
-    <div class="ap-form-input__box">
-      <label class="ap-form-label" for="email"> Email address </label>
-      <input
-        class="ap-form-input ap-form-input--full"
-        data-test="auth-login-form-email"
-        formControlName="email"
-        id="email"
-        name="email"
-        type="email" />
-      <span *ngIf="loginForm.get('email').valid && loginForm.get('email').touched" class="input-valid"></span>
-      <span *ngIf="loginForm.hasError('required', ['email']) && loginFormSubmitted" class="error-msg">
-        Email required!
-      </span>
-      <span
-        *ngIf="
-          !loginForm.hasError('required', ['email']) &&
-          loginFormSubmitted &&
-          loginForm.hasError('email', ['email']) &&
-          loginFormSubmitted
-        "
-        class="error-msg">
-        Invalid email!
-      </span>
-    </div>
+    <form
+      (ngSubmit)="login()"
+      [formGroup]="loginForm"
+      class="ap-form"
+      data-test="auth-login-form"
+    >
+      <div
+        *ngIf="criteriaError && loginFormSubmitted"
+        class="error-msg"
+      >
+        Password or email is invalid.
+      </div>
+      <div class="ap-form-input__box">
+        <label
+          class="ap-form-label"
+          for="email"
+        >
+          Email address
+        </label>
+        <input
+          class="ap-form-input"
+          data-test="auth-login-form-email"
+          formControlName="email"
+          id="email"
+          name="email"
+          type="email"
+        >
+        <span
+          *ngIf="loginForm.get('email').valid && loginForm.get('email').touched"
+          class="input-valid"
+        ></span>
+        <span
+          *ngIf="loginForm.hasError('required', ['email']) && loginFormSubmitted"
+          class="error-msg"
+        >
+            Email required!
+          </span>
+        <span
+          *ngIf="!loginForm.hasError('required', ['email']) && loginFormSubmitted && loginForm.hasError('email', ['email']) && loginFormSubmitted"
+          class="error-msg"
+        >
+            Invalid email!
+          </span>
+      </div>
 
     <div class="ap-form-input__box">
       <label class="ap-form-label" for="password"> Password </label>
