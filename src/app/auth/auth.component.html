@@ -15,8 +15,7 @@
           >
         </a>
         <a
-                class="ap-copy--white link"
-                style="color:#FAFAFA"
+                class="ap-copy--white"
                 [href]="termsOfServiceLink"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -25,8 +24,7 @@
           Terms of Service
         </a>
         <a
-                class="ap-copy--white link"
-                style="color:#FAFAFA"
+                class="ap-copy--white"
                 [href]="privacyPolicyLink"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -43,7 +41,9 @@
         <router-outlet #o="outlet"></router-outlet>
       </div>
       <div class="row align-center justify-between">
-
+        <p class="ap-copy ap-copy-instructions">
+          Don't have an account? Email <a href="mailto:ads@swashapp.io">ads@swashapp.io</a> to get verified and start onboarding today.
+        </p>
       </div>
     </div>
   </div>
@@ -51,6 +51,16 @@
           alt="bubbles"
           class="ap-auth-bubbles"
           src="assets/images/bubbles1.svg"
+  >
+  <img
+          alt="bubbles"
+          class="ap-auth-bubbles"
+          src="assets/images/bubbles2.svg"
+  >
+  <img
+          alt="bubbles"
+          class="ap-auth-bubbles"
+          src="assets/images/bubbles3.svg"
   >
   <img
           alt="wave"

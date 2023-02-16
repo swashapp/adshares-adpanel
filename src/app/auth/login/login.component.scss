@@ -3,7 +3,6 @@
 .ap-login {
   &-wrapper {
     height: 100%;
-    background-color: #FFF5FA;
   }
 
   &__remember {
@@ -13,7 +12,6 @@
 
 h2 {
   margin: 10px 0;
-  color: #0A0909;
 }
 
 .block-link {
@@ -64,8 +62,7 @@ form {
 }
 
 .ap-btn--blue{
-  background-color: #0A0909;
-  color: #FAFAFA;
+  background-color: #55a8fd;
   max-height: 46px;
 }
 .ap-form-input-login{
@@ -75,7 +72,7 @@ form {
   padding: 13px 13px 13px 18px;
   max-width: 320px;
   font-size: 1rem;
-  font-family: Inter-Regular,sans-serif;
+  font-family: Lato-Regular,sans-serif;
   font-style: normal;
   font-weight: 400;
 }
@@ -83,17 +80,12 @@ form {
   color: #55a8fd;
 }
 
-.ap-copy{
-  color: #0A0909;
-}
-
 .ap-heading{
   font-size: 4rem;
-  font-family: Inter-Black,sans-serif;
+  font-family: Lato-Black,sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.11;
-  color: #0A0909;
 }
 
 form {

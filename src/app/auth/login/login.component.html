@@ -7,10 +7,17 @@
     <ng-template #loading>
       <mat-spinner [diameter]="16" [strokeWidth]="2"></mat-spinner>
     </ng-template>
+    <h2
+            class="
+          ap-heading
+          ap-heading--primary"
+    >
+      Hello!
+    </h2>
     <p
             class="
           ap-copy
-          ap-copy--medium"
+          ap-copy--large"
     >
       Use your Swash credentials to log in below
     </p>
@@ -99,6 +106,39 @@
             justify-between
             ap-login__remember"
       >
+        <!--
+                  <div
+                    class="
+                      row
+                      align-center"
+                  >
+                    <input
+                      #rememberUser
+                      id="remember-user"
+                      type="checkbox"
+                      data-test="auth-login-form-remember-user-checkbox"
+                    >
+                    <label
+                      for="remember-user"
+                      class="checkbox-label"
+                    ></label>
+                    <span
+                      class="
+                        ap-copy
+                        ap-copy&#45;&#45;large
+                        ap-copy&#45;&#45;x-dark"
+                    >
+                      Remember me
+                    </span>
+                  </div>
+        -->
+        <a
+                class="ap-link"
+                data-test="auth-redirect-to-forgotten-password"
+                routerLink="/auth/forgotten-password"
+        >
+          Forgot password?
+        </a>
       </div>
 
       <button
@@ -113,7 +153,32 @@
       </button>
     </form>
   </div>
-  <p class="ap-copy ap-copy-instructions ap-link">
-    Don 't have an account?<a href="https://swashapp.io/solutions/advertise" style="color:#55a8fd"> Get started</a>.
+
+  <p class="ap-copy" *ngIf="registrationMode !== 'private'">
+    Don't have an account?
+    <a
+            *ngIf="registrationMode === 'public'"
+            class="ap-blue"
+            data-test="auth-redirect-to-registration"
+            routerLink="/auth/register"
+    >
+      Register
+    </a>
+    <a
+            *ngIf="registrationMode === 'restricted' && advertiserApplyFormUrl"
+            class="ap-blue block-link"
+            data-test="auth-redirect-to-registration"
+            [href]="advertiserApplyFormUrl"
+    >
+      Apply as Advertiser
+    </a>
+    <a
+            *ngIf="registrationMode === 'restricted' && publisherApplyFormUrl"
+            class="ap-blue block-link"
+            data-test="auth-redirect-to-registration"
+            [href]="publisherApplyFormUrl"
+    >
+      Apply as Publisher
+    </a>
   </p>
 </div>
