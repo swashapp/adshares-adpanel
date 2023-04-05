@@ -1,18 +1,6 @@
-import {
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
-import {
-  billingHistoryItemStatusEnum,
-  billingHistoryItemTypeEnum
-} from 'models/enum/billing-history.enum';
-import {
-  faArchive,
-  faHandHoldingUsd,
-  faFileInvoiceDollar,
-  faQuestion,
-} from '@fortawesome/free-solid-svg-icons';
+import { Component, Input, OnInit } from '@angular/core';
+import { billingHistoryItemStatusEnum, billingHistoryItemTypeEnum } from 'models/enum/billing-history.enum';
+import { faArchive, faHandHoldingUsd, faFileInvoiceDollar, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { appSettings } from 'app-settings';
 import { SettingsService } from 'settings/settings.service';
@@ -21,6 +9,7 @@ import { BillingHistoryItem } from 'models/settings.model';
 import { Store } from '@ngrx/store';
 import { CancelAwaitingTransaction } from 'store/settings/settings.actions';
 import { DATE_AND_TIME_FORMAT } from 'common/utilities/consts';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-billing-history-withdrawal',
@@ -36,10 +25,9 @@ export class BillingHistoryWithdrawalComponent implements OnInit {
   typeClass: string;
   icon;
   statusEnum = billingHistoryItemStatusEnum;
+  faCalendar = faCalendar;
 
-  constructor(private settingsService: SettingsService, private store: Store<AppState>) {
-
-  }
+  constructor(private settingsService: SettingsService, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.getIcon();
@@ -65,8 +53,10 @@ export class BillingHistoryWithdrawalComponent implements OnInit {
   }
 
   get showBonusIcon(): boolean {
-    return this.billingHistoryItem.type === billingHistoryItemTypeEnum.BONUS_INCOME ||
-      this.billingHistoryItem.type === billingHistoryItemTypeEnum.BONUS_EXPENDITURE;
+    return (
+      this.billingHistoryItem.type === billingHistoryItemTypeEnum.BONUS_INCOME ||
+      this.billingHistoryItem.type === billingHistoryItemTypeEnum.BONUS_EXPENDITURE
+    );
   }
 
   getIcon(): void {

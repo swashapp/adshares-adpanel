@@ -1,8 +1,9 @@
 export interface Info {
   adsAddress: string;
-  capabilities: string[]
+  capabilities: string[];
   demandFee: number;
   inventoryUrl: string;
+  landingUrl: string;
   mode: string;
   module: string;
   name: string;

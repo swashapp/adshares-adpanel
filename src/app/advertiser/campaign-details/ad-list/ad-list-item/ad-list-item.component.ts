@@ -11,6 +11,7 @@ import { STATUS_SAVE_SUCCESS } from 'common/utilities/messages';
 import { AppState } from 'models/app-state.model';
 import { Ad, Campaign } from 'models/campaign.model';
 import { ShowSuccessSnackbar } from 'store/common/common.actions';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-poster-list-item',
@@ -21,18 +22,18 @@ export class AdListItemComponent {
   @Input() ad: Ad;
   @Input() campaign: Campaign;
   adStatusesEnum = adStatusesEnum;
+  faChevronRight = faChevronRight;
 
   constructor(
     private advertiserService: AdvertiserService,
     private dialog: MatDialog,
     private store: Store<AppState>,
-    private router: Router) {
-  }
+    private router: Router
+  ) {}
 
   changeAdStatus(active: boolean): void {
-    const previousStatus = this.ad.status
-    this.ad.status =
-      active ? this.adStatusesEnum.ACTIVE : this.adStatusesEnum.INACTIVE;
+    const previousStatus = this.ad.status;
+    this.ad.status = active ? this.adStatusesEnum.ACTIVE : this.adStatusesEnum.INACTIVE;
 
     this.advertiserService.updateAdStatus(this.campaign.id, this.ad.id, this.ad.status).subscribe(
       () => {
@@ -45,7 +46,7 @@ export class AdListItemComponent {
             data: {
               title: `Error during status change`,
               message: `Change is not available at this moment. Please, try again later.`,
-            }
+            },
           });
         }
       }

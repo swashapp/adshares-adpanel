@@ -7,6 +7,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.6] - 2023-03-16
+### Fixed
+- Administrator access to billing history
+
+## [2.4.5] - 2023-03-15
+### Added
+- Server maintenance page
+- Default message for rejected site
+
+## [2.4.4] - 2023-02-28
+### Added
+- Warning before deposit if automatic withdrawal is active
+
+## [2.4.3] - 2023-02-21
+### Fixed
+Display admin role on screen smaller than 1800px
+
+## [2.4.2] - 2023-02-14
+### Changed
+- Links do landing page
+
+## [2.4.1] - 2023-02-13
+### Changed
+- Validate site's domain using medium
+- Change panel logo to 1 option png
+### Fixed
+- Filtering campaigns by available media
+
+## [2.4.0] - 2023-02-09
+### Added
+- Displaying user id on account settings section
+- Access to AdController for moderator
+- Filtering campaigns by medium
+### Changed
+- Total rebuild of panel look (color palette, elements sizes, arrangement of elements)
+- Font change to Montserrat 
+- Improved navigation
+- Update labels
+- Font awesome icons instead of image assets
+- Allow creating campaigns for any vendor of medium
+### Fixed
+- External links
+- Forbidden to add parcel with incomplete coordinates
+- Click conversion choice
+- Do not display double error on token error
+
+## [2.3.0] - 2023-01-26
+### Added
+- Site's statuses (pending approval, rejected)
+- Targeting chip representing domain routes to page on click
+### Changed
+- Load direct link ad content during campaign load
+### Fixed
+- Set chart's date filter
+- Sites' order on dashboard after status change
+- Set conversion's mutable value
+- Handle HTTP 403 error
+- Check user's role during impersonation
+
+## [2.2.4] - 2022-12-29
+### Fixed
+- OAuth redirection during adserver initialization
+
 ## [2.2.3] - 2022-12-19
 ### Removed
 - Filtering user list by confirmation status
@@ -507,7 +570,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Publisher features (Sites & AdUnits)
 
 
-[Unreleased]: https://github.com/adshares/adpanel/compare/v2.2.3...develop
+[Unreleased]: https://github.com/adshares/adpanel/compare/v2.4.6...develop
+[2.4.6]: https://github.com/adshares/adpanel/compare/v2.4.5...v2.4.6
+[2.4.5]: https://github.com/adshares/adpanel/compare/v2.4.4...v2.4.5
+[2.4.4]: https://github.com/adshares/adpanel/compare/v2.4.3...v2.4.4
+[2.4.3]: https://github.com/adshares/adpanel/compare/v2.4.2...v2.4.3
+[2.4.2]: https://github.com/adshares/adpanel/compare/v2.4.1...v2.4.2
+[2.4.1]: https://github.com/adshares/adpanel/compare/v2.4.0...v2.4.1
+[2.4.0]: https://github.com/adshares/adpanel/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/adshares/adpanel/compare/v2.2.4...v2.3.0
+[2.2.4]: https://github.com/adshares/adpanel/compare/v2.2.3...v2.2.4
 [2.2.3]: https://github.com/adshares/adpanel/compare/v2.2.2...v2.2.3
 [2.2.2]: https://github.com/adshares/adpanel/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/adshares/adpanel/compare/v2.2.0...v2.2.1

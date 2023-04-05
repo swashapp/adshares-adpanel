@@ -9,29 +9,32 @@ import { first } from 'rxjs/operators';
 import { AppState } from 'models/app-state.model';
 import { Campaign, CampaignConversion, CampaignConversionItem, CampaignsConfig } from 'models/campaign.model';
 import { campaignConversionItemInitialState } from 'models/initial-state/campaign';
+import { CONVERSIONS_DESCRIPTION } from 'models/enum/link.enum';
 import {
-  ClearLastEditedCampaign, LoadCampaignsConfig,
+  ClearLastEditedCampaign,
+  LoadCampaignsConfig,
   SaveConversion,
   UPDATE_CAMPAIGN_FAILURE,
-  UPDATE_CAMPAIGN_SUCCESS
+  UPDATE_CAMPAIGN_SUCCESS,
 } from 'store/advertiser/advertiser.actions';
+import { faTriangleExclamation, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import { AdvertiserService } from 'advertiser/advertiser.service';
-import { HandleSubscription } from 'common/handle-subscription';
+import { HandleSubscriptionComponent } from 'common/handle-subscription.component';
 import { ConfirmResponseDialogComponent } from 'common/dialog/confirm-response-dialog/confirm-response-dialog.component';
 import { ConversionLinkInformationDialogComponent } from 'common/dialog/information-dialog/conversion-link-information-dialog.component';
-import { ShowDialogOnError, ShowSuccessSnackbar } from 'store/common/common.actions';
+import { ShowDialogOnError } from 'store/common/common.actions';
 import { adsToClicks, clicksToAds, formatMoney } from 'common/utilities/helpers';
 import { campaignConversionClick } from 'models/enum/campaign.enum';
-import { CustomValidators } from "common/utilities/forms";
-import { ServerOptionsService } from 'common/server-options.service'
+import { CustomValidators } from 'common/utilities/forms';
+import { ServerOptionsService } from 'common/server-options.service';
 
 @Component({
   selector: 'app-edit-campaign-conversion',
   templateUrl: './edit-campaign-conversion.component.html',
-  styleUrls: ['./edit-campaign-conversion.component.scss']
+  styleUrls: ['./edit-campaign-conversion.component.scss'],
 })
-export class EditCampaignConversionComponent extends HandleSubscription implements OnInit {
+export class EditCampaignConversionComponent extends HandleSubscriptionComponent implements OnInit {
   currencyCode: string;
   readonly TYPE_ADVANCED: string = 'advanced';
   readonly TYPE_BASIC: string = 'basic';
@@ -39,6 +42,10 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
   private readonly CONVERSION_COUNT_MAXIMAL: number = 100;
   private readonly BUDGET_TYPE_IN: string = 'in_budget';
   private readonly BUDGET_TYPE_OUT: string = 'out_of_budget';
+
+  faTriangleExclamation = faTriangleExclamation;
+  faCopy = faCopy;
+  CONVERSIONS_DESCRIPTION = CONVERSIONS_DESCRIPTION;
 
   readonly availableEventTypes = [
     'Add payment info',
@@ -61,14 +68,14 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
   ];
 
   readonly clickConversionTypes = [
-    {value: campaignConversionClick.NONE, label: 'Default'},
-    {value: campaignConversionClick.BASIC, label: 'Basic link'},
-    {value: campaignConversionClick.ADVANCED, label: 'Advanced link'},
+    { value: campaignConversionClick.NONE, label: 'Default' },
+    { value: campaignConversionClick.BASIC, label: 'Basic link' },
+    { value: campaignConversionClick.ADVANCED, label: 'Advanced link' },
   ];
 
   conversionItemForms: FormGroup[] = [];
   campaignsConfig: CampaignsConfig;
-  campaign: Campaign;
+  public campaign: Campaign;
 
   validateForm: boolean = false;
   submitted: boolean = false;
@@ -82,7 +89,7 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
     private advertiserService: AdvertiserService,
     private serverOptionsService: ServerOptionsService,
     private dialog: MatDialog,
-    action$: Actions,
+    action$: Actions
   ) {
     super();
     this.action$ = action$;
@@ -98,6 +105,10 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
 
   get conversionItemFormsBasic(): FormGroup[] {
     return this.conversionItemForms.filter(form => !form.get('isAdvanced').value);
+  }
+
+  onConversionClickChange(value): void {
+    this.campaign = { ...this.campaign, conversionClick: value };
   }
 
   updateCampaignConversion(): void {
@@ -116,32 +127,25 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
     };
     this.store.dispatch(new SaveConversion(this.campaign));
 
-    this.action$
-      .pipe(
-        ofType(
-          UPDATE_CAMPAIGN_SUCCESS,
-          UPDATE_CAMPAIGN_FAILURE
-        ),
-        first()
-      )
-      .subscribe((action: Action) => {
-        this.submitted = false;
-        if (action.type === UPDATE_CAMPAIGN_SUCCESS) {
-          this.conversionItemForms.forEach(item => item.markAsPristine());
-          this.conversionItemForms.forEach(item => item.markAsUntouched());
-          this.advertiserService.getCampaign(this.campaign.id)
-            .pipe(first())
-            .subscribe(
-              (data) => {
-                this.campaign = data.campaign;
-                this.adjustConversionData(this.campaign.conversions)
-              },
-              (error) => {
-                this.store.dispatch(new ShowDialogOnError(error.code))
-              }
-            )
-        }
-      });
+    this.action$.pipe(ofType(UPDATE_CAMPAIGN_SUCCESS, UPDATE_CAMPAIGN_FAILURE), first()).subscribe((action: Action) => {
+      this.submitted = false;
+      if (action.type === UPDATE_CAMPAIGN_SUCCESS) {
+        this.conversionItemForms.forEach(item => item.markAsPristine());
+        this.conversionItemForms.forEach(item => item.markAsUntouched());
+        this.advertiserService
+          .getCampaign(this.campaign.id)
+          .pipe(first())
+          .subscribe(
+            data => {
+              this.campaign = data.campaign;
+              this.adjustConversionData(this.campaign.conversions);
+            },
+            error => {
+              this.store.dispatch(new ShowDialogOnError(error.code));
+            }
+          );
+      }
+    });
   }
 
   get isConversionClickAdvanced(): boolean {
@@ -153,22 +157,39 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
     return this.conversionItemForms.every(item => item.valid);
   }
 
+  isFormError(type: 'basic' | 'advanced'): boolean {
+    this.validateAdvancedValueControl();
+    if (type === 'basic') {
+      return this.conversionItemForms.filter(form => !form.get('isAdvanced').value).every(item => item.valid);
+    }
+
+    if (type === 'advanced') {
+      return this.conversionItemForms.filter(form => form.get('isAdvanced').value).every(item => item.valid);
+    }
+    return this.conversionItemForms.every(item => item.valid);
+  }
+
   validateAdvancedValueControl() {
-    const elementsWithError = this.conversionItemForms
-      .filter(el => el.controls.isAdvanced.value && !!el.controls.isValueMutable.value === false && !el.controls.value.value);
-    const validElements = this.conversionItemForms
-      .filter(el => el.controls.isAdvanced.value && !!el.controls.isValueMutable.value === true && el.controls.value.status === 'INVALID');
+    const elementsWithError = this.conversionItemForms.filter(
+      el => el.controls.isAdvanced.value && !!el.controls.isValueMutable.value === false && !el.controls.value.value
+    );
+    const validElements = this.conversionItemForms.filter(
+      el =>
+        el.controls.isAdvanced.value &&
+        !!el.controls.isValueMutable.value === true &&
+        el.controls.value.status === 'INVALID'
+    );
 
     if (elementsWithError) {
       elementsWithError.forEach(el => {
-        el.controls.value.setErrors({'required': true})
-      })
+        el.controls.value.setErrors({ required: true });
+      });
     }
 
     if (validElements) {
       validElements.forEach(el => {
-        el.controls.value.setErrors(null)
-      })
+        el.controls.value.setErrors(null);
+      });
     }
   }
 
@@ -185,17 +206,23 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
       uuid: new FormControl(itemUuid),
       name: new FormControl(item.name, Validators.required),
       type: new FormControl(item.eventType, Validators.required),
-      isAdvanced: new FormControl({value: itemIsAdvanced, disabled: true}),
-      isInBudget: new FormControl({value: item.isInBudget, disabled: !itemIsAdvanced}),
+      isAdvanced: new FormControl({ value: itemIsAdvanced, disabled: true }),
+      isInBudget: new FormControl({
+        value: item.isInBudget,
+        disabled: !itemIsAdvanced,
+      }),
       isValueMutable: new FormControl(item.isValueMutable || false),
-      isRepeatable: new FormControl({value: item.isRepeatable || false, disabled: !itemIsAdvanced}),
+      isRepeatable: new FormControl({
+        value: item.isRepeatable || false,
+        disabled: !itemIsAdvanced,
+      }),
       value: new FormControl(item.value, valueValidators),
       link: new FormControl(item.link),
     });
   }
 
   get conversionsToSave(): CampaignConversion[] {
-    return this.conversionItemForms.map((form) => {
+    return this.conversionItemForms.map(form => {
       const value = form.get('value').value;
 
       return <CampaignConversion>{
@@ -230,16 +257,18 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
   }
 
   getFormDataFromStore(): void {
-    this.currencyCode = this.serverOptionsService.getOptions().displayCurrency
+    this.currencyCode = this.serverOptionsService.getOptions().displayCurrency;
     this.store.dispatch(new LoadCampaignsConfig());
 
-    const subscription = this.store.select('state', 'advertiser', 'lastEditedCampaign')
+    const subscription = this.store
+      .select('state', 'advertiser', 'lastEditedCampaign')
       .pipe(first())
       .subscribe((lastEditedCampaign: Campaign) => {
         this.campaign = lastEditedCampaign;
       });
 
-    const configSubscription = this.store.select('state', 'advertiser', 'campaignsConfig')
+    const configSubscription = this.store
+      .select('state', 'advertiser', 'campaignsConfig')
       .subscribe((config: CampaignsConfig) => {
         this.campaignsConfig = config;
         this.adjustConversionData(this.campaign.conversions);
@@ -263,7 +292,7 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
         data: {
           title: 'Maximum conversion count reached',
           message: `You are not able to add more than ${this.CONVERSION_COUNT_MAXIMAL} conversions.`,
-        }
+        },
       });
 
       return;
@@ -305,22 +334,12 @@ export class EditCampaignConversionComponent extends HandleSubscription implemen
       data: {
         isAdvanced: isAdvanced,
         link: link,
-      }
+      },
     });
   }
 
   onStepBack(): void {
     this.store.dispatch(new ClearLastEditedCampaign());
     this.router.navigate(['/advertiser', 'campaign', this.campaign.id]);
-  }
-
-  copyToClipboard(content: string) {
-    document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', (content));
-      e.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
-    this.store.dispatch(new ShowSuccessSnackbar('Copied!'))
   }
 }

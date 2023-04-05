@@ -44,11 +44,12 @@
 
 .chart-filters {
   z-index: 1;
-  min-width: 550px;
+  min-width: 655px;
   position: absolute;
   right: 0;
   top: 0;
-  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   transform-origin: top center;
   opacity: 0;
   transform: scaleY(0);
@@ -60,14 +61,13 @@
     animation: slideDown 0.2s ease-out;
   }
 
-  .filter-row {
-    > * {
-      margin: 10px 0 10px 10px;
-    }
+  & .ap-btn {
+    min-width: 0;
   }
 }
 
-.ap-form-input--datepicker, .ap-form-select--datepicker {
+.ap-form-input--datepicker,
+.ap-form-select--datepicker {
   background: white;
   border: none;
   padding: 0 10px;

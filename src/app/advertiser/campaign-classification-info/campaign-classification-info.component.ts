@@ -1,40 +1,44 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CampaignClassification } from 'models/campaign.model';
-import { faUserCheck, faUserClock, faUserTimes } from "@fortawesome/free-solid-svg-icons";
-import { bannerClassificationStatusEnum } from "models/enum/classification.enum";
-import { IconDefinition } from "@fortawesome/fontawesome-common-types";
-import { TargetingOption, TargetingOptionValue } from "models/targeting-option.model";
-import { ActivatedRoute } from "@angular/router";
+import { faUserCheck, faUserClock, faUserTimes } from '@fortawesome/free-solid-svg-icons';
+import { bannerClassificationStatusEnum } from 'models/enum/classification.enum';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { TargetingOption, TargetingOptionValue } from 'models/targeting-option.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-campaign-classification-info',
   templateUrl: './campaign-classification-info.component.html',
   styleUrls: ['./campaign-classification-info.component.scss'],
 })
-
 export class CampaignClassificationInfoComponent implements OnInit {
   @Input() classifications: CampaignClassification[];
   @Input() extended: boolean = false;
   options: TargetingOption[];
-  private _keywords = [];
+  private _keywordsObj = {};
 
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.options = this.route.snapshot.data.filteringOptions;
   }
 
   isInProgress(classification: CampaignClassification) {
-    return classification.status == bannerClassificationStatusEnum.NEW || classification.status == bannerClassificationStatusEnum.IN_PROGRESS;
+    return (
+      classification.status === bannerClassificationStatusEnum.NEW ||
+      classification.status === bannerClassificationStatusEnum.IN_PROGRESS
+    );
   }
 
   isError(classification: CampaignClassification) {
-    return classification.status == bannerClassificationStatusEnum.ERROR || classification.status == bannerClassificationStatusEnum.FAILURE;
+    return (
+      classification.status === bannerClassificationStatusEnum.ERROR ||
+      classification.status === bannerClassificationStatusEnum.FAILURE
+    );
   }
 
   isSuccess(classification: CampaignClassification) {
-    return classification.status == bannerClassificationStatusEnum.SUCCESS;
+    return classification.status === bannerClassificationStatusEnum.SUCCESS;
   }
 
   status(classification: CampaignClassification): string {
@@ -73,7 +77,6 @@ export class CampaignClassificationInfoComponent implements OnInit {
   }
 
   description(classification: CampaignClassification): string {
-
     let descriptions = [];
 
     if (this.isInProgress(classification)) {
@@ -81,7 +84,9 @@ export class CampaignClassificationInfoComponent implements OnInit {
     } else if (this.isSuccess(classification)) {
       descriptions.push('The campaign has been successfully classified.');
     } else {
-      descriptions.push('An unknown error has occurred. Some of the ads may not display correctly. Please contact support.');
+      descriptions.push(
+        'An unknown error has occurred. Some of the ads may not display correctly. Please contact support.'
+      );
     }
 
     if (!this.extended) {
@@ -98,21 +103,22 @@ export class CampaignClassificationInfoComponent implements OnInit {
   }
 
   keywords(classification: CampaignClassification, group: string = 'category'): TargetingOptionValue[] {
-    if ('undefined' === typeof this._keywords[classification.classifier]) {
-      this._keywords[classification.classifier] = [];
+    if ('undefined' === typeof this._keywordsObj[classification.classifier]) {
+      this._keywordsObj[classification.classifier] = {};
     }
-    if ('undefined' === typeof this._keywords[classification.classifier][group]) {
+    if ('undefined' === typeof this._keywordsObj[classification.classifier][group]) {
       let keywords = [];
       if ('undefined' !== typeof classification.keywords[group]) {
         keywords = classification.keywords[group].map((keyword: string) => {
-          const option = this.options.find((option: TargetingOption) => option.key == `${classification.classifier}:${group}`);
-          const value = option ? option.values.find(item => item.value == keyword) : null;
-          return value ? value : {value: keyword, label: keyword};
+          const option = this.options.find(
+            (option: TargetingOption) => option.key === `${classification.classifier}:${group}`
+          );
+          const value = option ? option.values.find(item => item.value === keyword) : null;
+          return value ? value : { value: keyword, label: keyword };
         });
       }
-      this._keywords[classification.classifier][group] = keywords;
+      this._keywordsObj[classification.classifier][group] = keywords;
     }
-
-    return this._keywords[classification.classifier][group];
+    return this._keywordsObj[classification.classifier][group];
   }
 }

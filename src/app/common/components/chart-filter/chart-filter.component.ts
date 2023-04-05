@@ -1,23 +1,26 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { HandleSubscription } from 'common/handle-subscription';
+import { HandleSubscriptionComponent } from 'common/handle-subscription.component';
 import { AppState } from 'models/app-state.model';
 import { ChartFilterSettings, FilterPreset, TimespanFilter } from 'models/chart/chart-filter-settings.model';
 import * as moment from 'moment';
-import { filterPresetsEnum } from "models/enum/chart.enum";
-import { enumToObjectArray } from "common/utilities/helpers";
-import { DATE_FORMAT } from "common/utilities/consts";
+import { filterPresetsEnum } from 'models/enum/chart.enum';
+import { enumToObjectArray } from 'common/utilities/helpers';
+import { DATE_FORMAT } from 'common/utilities/consts';
+import { faCalendar, faArrowAltCircleRight } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-chart-filter',
   templateUrl: './chart-filter.component.html',
   styleUrls: ['./chart-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartFilterComponent extends HandleSubscription implements OnInit {
+export class ChartFilterComponent extends HandleSubscriptionComponent implements OnInit {
   @Output() filter: EventEmitter<TimespanFilter> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('closed') closedStream: EventEmitter<boolean>;
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('opened') openedStream: EventEmitter<boolean>;
   @Input() small: boolean = false;
 
@@ -32,13 +35,16 @@ export class ChartFilterComponent extends HandleSubscription implements OnInit {
   currentToFilter: string;
   datepickerVisible: boolean = false;
   calendarOpened: boolean;
+  faCalendar = faCalendar;
+  faArrowAltCircleRight = faArrowAltCircleRight;
 
   constructor(private store: Store<AppState>) {
     super();
   }
 
   ngOnInit() {
-    const chartFilterSubscription = this.store.select('state', 'common', 'chartFilterSettings')
+    const chartFilterSubscription = this.store
+      .select('state', 'common', 'chartFilterSettings')
       .subscribe((chartFilterSettings: ChartFilterSettings) => {
         this.currentChartFilterSettings = chartFilterSettings;
         this.updateCurrentDaysSpan();
@@ -50,7 +56,7 @@ export class ChartFilterComponent extends HandleSubscription implements OnInit {
     this.hideDatepicker();
     const timespan = {
       from: isNaN(from) ? from.value._d : moment().startOf('day').subtract(from, 'days'),
-      to: isNaN(to) ? moment(to.value._d).endOf('day') : moment().endOf('day')
+      to: isNaN(to) ? moment(to.value._d).endOf('day') : moment().endOf('day'),
     };
     this.filter.emit(timespan);
     if (!isFromDatepicker) {
@@ -70,16 +76,17 @@ export class ChartFilterComponent extends HandleSubscription implements OnInit {
     this.filterChart(this.dateFrom, this.dateTo, true);
   }
 
-  updateCurrentDaysSpan() {
-    const isCurrent = moment(new Date()).format(DATE_FORMAT) ===
-      moment(this.currentChartFilterSettings.currentTo).format(DATE_FORMAT);
-    this.currentDaysSpan = moment(this.currentChartFilterSettings.currentTo)
-      .diff(moment(this.currentChartFilterSettings.currentFrom), 'days');
-    this.currentFilterPreset = this.filterPresets.find(p => {
-      return (p.id === this.currentDaysSpan) && isCurrent
-    });
-    this.currentFromFilter = moment(this.currentChartFilterSettings.currentFrom).format(DATE_FORMAT);
-    this.currentToFilter = moment(this.currentChartFilterSettings.currentTo).format(DATE_FORMAT);
+  updateCurrentDaysSpan(): void {
+    const momentFrom = moment(this.currentChartFilterSettings.currentFrom);
+    const momentTo = moment(this.currentChartFilterSettings.currentTo);
+
+    const isCurrent = moment(new Date()).format(DATE_FORMAT) === momentTo.format(DATE_FORMAT);
+    this.currentDaysSpan = momentTo.diff(momentFrom, 'days');
+    this.currentFilterPreset = this.filterPresets.find(p => p.id === this.currentDaysSpan && isCurrent);
+    this.currentFromFilter = momentFrom.format(DATE_FORMAT);
+    this.currentToFilter = momentTo.format(DATE_FORMAT);
+    this.dateFrom.setValue(momentFrom);
+    this.dateTo.setValue(momentTo);
   }
 
   showDatepicker() {
@@ -95,6 +102,6 @@ export class ChartFilterComponent extends HandleSubscription implements OnInit {
   setCalendarStatus(status) {
     setTimeout(() => {
       this.calendarOpened = status;
-    }, 500)
+    }, 500);
   }
 }

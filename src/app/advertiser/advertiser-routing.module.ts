@@ -16,8 +16,9 @@ import { CampaignResolver } from './resolvers/campaign.resolver';
 import { MediaResolver } from 'common/resolvers/media.resolver';
 import { BannersConfigResolver } from 'advertiser/resolvers/banners-config.resolver';
 import { CampaignsConfigResolver } from 'advertiser/resolvers/campaigns-config.resolver';
+import { CampaignsMediaResolver } from 'advertiser/resolvers/campaigns-media.resolver';
 import { FilteringCriteriaResolver } from 'publisher/resolvers/filtering-criteria.resolver';
-import { ServerOptionsResolver } from 'common/resolvers/server-options.resolver'
+import { ServerOptionsResolver } from 'common/resolvers/server-options.resolver';
 
 const advertiserRoutes: Routes = [
   {
@@ -28,13 +29,15 @@ const advertiserRoutes: Routes = [
       options: ServerOptionsResolver,
     },
     children: [
-      {path: '', pathMatch: 'full', redirectTo: '/advertiser/dashboard'},
+      { path: '', pathMatch: 'full', redirectTo: '/advertiser/dashboard' },
       {
         path: 'dashboard',
         component: DashboardComponent,
         resolve: {
-          filteringOptions: FilteringCriteriaResolver
-        }
+          filteringOptions: FilteringCriteriaResolver,
+          media: MediaResolver,
+          campaignsMedia: CampaignsMediaResolver,
+        },
       },
       {
         path: 'campaign/:id',
@@ -44,7 +47,7 @@ const advertiserRoutes: Routes = [
           filteringOptions: FilteringCriteriaResolver,
           campaign: CampaignResolver,
           media: MediaResolver,
-        }
+        },
       },
       {
         path: 'create-campaign',
@@ -55,7 +58,7 @@ const advertiserRoutes: Routes = [
             component: EditCampaignBasicInformationComponent,
             resolve: {
               media: MediaResolver,
-            }
+            },
           },
           {
             path: 'additional-targeting',
@@ -70,9 +73,9 @@ const advertiserRoutes: Routes = [
           },
           {
             path: 'summary',
-            component: EditCampaignSummaryComponent
-          }
-        ]
+            component: EditCampaignSummaryComponent,
+          },
+        ],
       },
       {
         path: 'edit-campaign/:id',
@@ -87,14 +90,14 @@ const advertiserRoutes: Routes = [
             component: EditCampaignBasicInformationComponent,
             resolve: {
               media: MediaResolver,
-            }
+            },
           },
           {
             path: 'bid-strategy',
             component: EditCampaignBidStrategyComponent,
             resolve: {
               media: MediaResolver,
-            }
+            },
           },
           {
             path: 'conversion',
@@ -113,21 +116,16 @@ const advertiserRoutes: Routes = [
           },
           {
             path: 'summary',
-            component: EditCampaignSummaryComponent
-          }
-        ]
-      }
-    ]
-  }
+            component: EditCampaignSummaryComponent,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(advertiserRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forRoot(advertiserRoutes)],
+  exports: [RouterModule],
 })
-export class AdvertiserRoutingModule {
-}
+export class AdvertiserRoutingModule {}

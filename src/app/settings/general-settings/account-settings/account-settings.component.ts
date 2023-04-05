@@ -1,5 +1,8 @@
-import { Component } from '@angular/core'
-import { SessionService } from '../../../session.service'
+import { Component } from '@angular/core';
+import { SessionService } from '../../../session.service';
+import { User } from 'models/user.model';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { HelperService } from 'common/helper.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -7,12 +10,14 @@ import { SessionService } from '../../../session.service'
   styleUrls: ['./account-settings.component.scss'],
 })
 export class AccountSettingsComponent {
-  isModerator: boolean = false
+  user: User;
+  faCopy = faCopy;
 
-  constructor (
-    private session: SessionService,
-  ) {
-    this.isModerator = session.isModerator()
+  constructor(private session: SessionService, private helperService: HelperService) {
+    this.user = this.session.getUser();
   }
 
+  copyUserId(): void {
+    this.helperService.copyToClipboard(this.user.uuid);
+  }
 }

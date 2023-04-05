@@ -1,32 +1,32 @@
-import { Component } from '@angular/core'
-import { SessionService } from 'app/session.service'
-import { LocalStorageUser, UserAdserverWallet } from 'models/user.model'
-import { Store } from '@ngrx/store'
-import { AppState } from 'models/app-state.model'
-import { HandleSubscription } from 'common/handle-subscription'
-import { CODE, CRYPTO } from 'common/utilities/consts'
-import { ServerOptionsService } from 'common/server-options.service'
+import { Component, OnInit } from '@angular/core';
+import { SessionService } from 'app/session.service';
+import { LocalStorageUser, UserAdserverWallet } from 'models/user.model';
+import { Store } from '@ngrx/store';
+import { AppState } from 'models/app-state.model';
+import { HandleSubscriptionComponent } from 'common/handle-subscription.component';
+import { CODE, CRYPTO } from 'common/utilities/consts';
+import { ServerOptionsService } from 'common/server-options.service';
 
 @Component({
   selector: 'app-settings-navigation',
   templateUrl: './settings-navigation.component.html',
   styleUrls: ['./settings-navigation.component.scss'],
 })
-export class SettingsNavigationComponent extends HandleSubscription {
-  crypto: string = CRYPTO
-  code: string = CODE
-  calculateFunds: boolean
-  wallet: UserAdserverWallet
-  totalFunds: number
-  user: LocalStorageUser
-  settings = []
+export class SettingsNavigationComponent extends HandleSubscriptionComponent implements OnInit {
+  crypto: string = CRYPTO;
+  code: string = CODE;
+  calculateFunds: boolean;
+  wallet: UserAdserverWallet;
+  totalFunds: number;
+  user: LocalStorageUser;
+  settings = [];
 
-  constructor (
+  constructor(
     private serverOptionsService: ServerOptionsService,
     private session: SessionService,
-    private store: Store<AppState>,
+    private store: Store<AppState>
   ) {
-    super()
+    super();
 
     if (session.isModerator()) {
       this.settings.push({
@@ -34,12 +34,12 @@ export class SettingsNavigationComponent extends HandleSubscription {
         description: '',
         link: '/moderator/dashboard/users',
         values: [
-          { name: 'Users List', icon: 'assets/images/user-gray.svg' },
-          { name: 'Publishers', icon: 'assets/images/user-gray.svg' },
-          { name: 'Advertisers', icon: 'assets/images/user-gray.svg' },
-          { name: 'Reports', icon: 'assets/images/user-gray.svg' },
+          { name: 'Users List', path: '/all' },
+          { name: 'Publishers', path: '/publishers' },
+          { name: 'Advertisers', path: '/advertisers' },
+          { name: 'Reports', path: '/reports' },
         ],
-      })
+      });
     }
 
     if (session.isAgency()) {
@@ -48,11 +48,12 @@ export class SettingsNavigationComponent extends HandleSubscription {
         description: '',
         link: '/agency/dashboard/users',
         values: [
-          { name: 'Users List', icon: 'assets/images/user-gray.svg' },
-          { name: 'Publishers', icon: 'assets/images/user-gray.svg' },
-          { name: 'Reports', icon: 'assets/images/user-gray.svg' },
+          { name: 'Users List', path: '/all' },
+          { name: 'Publishers', path: '/publishers' },
+          { name: 'Advertisers', path: '/advertisers' },
+          { name: 'Reports', path: '/reports' },
         ],
-      })
+      });
     }
 
     this.settings.push({
@@ -60,44 +61,43 @@ export class SettingsNavigationComponent extends HandleSubscription {
       description: '',
       link: '/settings/general',
       values: [
-        { name: 'Wallet settings', icon: 'assets/images/preferences.svg' },
-        { name: 'Email & password', icon: 'assets/images/preferences.svg' },
-        { name: 'Referral links', icon: 'assets/images/preferences.svg' },
-        { name: 'Access tokens', icon: 'assets/images/preferences.svg' },
-        { name: 'Newsletter', icon: 'assets/images/preferences.svg' },
+        { name: 'Wallet', path: '/wallet' },
+        { name: 'Email & password', path: '/preferences' },
+        { name: 'Referral links', path: '/referrals' },
+        { name: 'Access tokens', path: '/access-token' },
+        { name: 'Newsletter', path: '/newsletter' },
       ],
-    })
+    });
 
-    if (!session.isModerator()) {
+    if (!session.isModerator() || session.isImpersonated()) {
       this.settings.push({
         title: 'Billing & payments',
         description: '',
         link: '/settings/billing',
         values: [
-          { name: 'Your wallet', icon: 'assets/images/wallet--gray.svg' },
-          { name: 'Billing history', icon: 'assets/images/history.svg' },
+          { name: 'Your wallet', path: '/wallet' },
+          { name: 'Billing history', path: '/history' },
         ],
-      })
+      });
       this.settings.push({
         title: 'Reports',
         description: '',
         link: '/settings/reports',
-        values: [
-          { name: 'Reports', icon: 'assets/images/chevron--gray.svg' },
-        ],
-      })
+        values: [{ name: 'Reports', path: '' }],
+      });
     }
   }
 
-  ngOnInit (): void {
-    const options = this.serverOptionsService.getOptions()
-    this.calculateFunds = options.displayCurrency !== options.appCurrency
+  ngOnInit(): void {
+    const options = this.serverOptionsService.getOptions();
+    this.calculateFunds = options.displayCurrency !== options.appCurrency;
 
-    this.user = this.session.getUser()
-    const userDataStateSubscription = this.store.select('state', 'user', 'data',
-      'adserverWallet', 'totalFunds').subscribe((totalFunds: number) => {
-      this.totalFunds = totalFunds
-    })
-    this.subscriptions.push(userDataStateSubscription)
+    this.user = this.session.getUser();
+    const userDataStateSubscription = this.store
+      .select('state', 'user', 'data', 'adserverWallet', 'totalFunds')
+      .subscribe((totalFunds: number) => {
+        this.totalFunds = totalFunds;
+      });
+    this.subscriptions.push(userDataStateSubscription);
   }
 }
