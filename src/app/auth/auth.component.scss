@@ -1,10 +1,14 @@
 @import '../../styles.scss';
 
+.link{
+
+}
 .ap-auth {
   height: 100vh;
   width: 100vw;
-  background-image: radial-gradient(circle at 24% 13%, #0c1733, #000000);
+  background-color: #BF289D;
   position: relative;
+  overflow-y: scroll;
 
   &-wrapper {
     height: 90%;
@@ -19,7 +23,7 @@
   }
 
   &__poster {
-    background-image: radial-gradient(circle at 24% 13%, #121e3e, #0b1329);
+    background-color: #EC0363;
     max-width: 600px;
     padding: 40px;
 
@@ -38,6 +42,7 @@
 
       .ap-heading--secondary {
         margin: 50px 0 10px 0;
+        color: #fafafa;
       }
 
       li {
@@ -61,6 +66,7 @@
     max-width: 600px;
     padding: 20px;
     overflow: scroll;
+    background-color: #BF289D;
 
     @include media(sm-up) {
       overflow: hidden;
@@ -144,16 +150,17 @@
   font-style: normal;
   font-weight: 400;
   line-height: 1.11;
+  color: #0A0909;
 }
 
 .ap-white{
-  color: #fff;
+  color: #FAFAFA;
 }
 
 .ap-copy2{
-  color: #747474;
+  color: #FAFAFA;
 }
 
 .ap-bg-white{
-  background-color: white;
+  background-color: #FFF5FA ;;
 }

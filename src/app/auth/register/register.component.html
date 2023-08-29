@@ -8,11 +8,7 @@
   <div *ngIf="registrationEnabled" class="col row--gap18">
     <div class="col row--gap8">
       <h2 class="ap-heading ap-heading--h3 text-left">Create Account</h2>
-      <p class="ap-copy text-left">We need your basic information to create your account.</p>
-      <p class="ap-alert ap-alert--info">
-        To create an account using ADS Wallet or MetaMask, <br />
-        just <a routerLink="/auth/login" data-test="auth-redirect-to-login">log in</a>.
-      </p>
+      <p class="ap-copy text-left">Enter your details below to get started.</p>
     </div>
     <form
       #registrationForm="ngForm"
@@ -107,8 +103,8 @@
       </div>
     </form>
     <p class="ap-copy">
-      Maybe you already have an account?
-      <a routerLink="/auth/login" data-test="auth-redirect-to-login"> Log In </a>
+      Already signed up?
+      <a routerLink="/auth/login" data-test="auth-redirect-to-login"> Login </a>
     </p>
   </div>
 </div>
