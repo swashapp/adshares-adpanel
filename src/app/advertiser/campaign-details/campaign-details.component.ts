@@ -130,6 +130,7 @@ export class CampaignDetailsComponent extends HandleSubscriptionComponent implem
             });
           this.prepareMediumLabel(this.campaign);
         }
+        console.log('updateCampaignErrors1')
         this.updateCampaignErrors();
         this.updateConversionTableItems();
       });
@@ -142,11 +143,13 @@ export class CampaignDetailsComponent extends HandleSubscriptionComponent implem
       .select('state', 'advertiser', 'campaignsConfig')
       .subscribe((campaignsConfig: CampaignsConfig) => {
         this.campaignsConfig = campaignsConfig;
+        console.log('updateCampaignErrors2')
         this.updateCampaignErrors();
       });
 
     const userSubscription = this.store.select('state', 'user', 'data').subscribe((user: User) => {
       this.user = user;
+      console.log('updateCampaignErrors3')
       this.updateCampaignErrors();
     });
 
