@@ -8,7 +8,7 @@ export const ADD_UNIT_DECENTRALAND_SMART = 'https://adshar.es/dclsmart';
 export const ADS_TXT_INSTRUCTION = 'https://adshar.es/adstxt';
 
 // List of ad units available in the network
-export const ADSHARES_UNITS = 'https://adshares.net/units';
+export const ADSHARES_UNITS = 'https://swashapp.io/solutions/advertise/sizes';
 
 // Adshares wallet installation instruction
 export const ADSHARES_WALLET = 'https://adshares.net/wallet';

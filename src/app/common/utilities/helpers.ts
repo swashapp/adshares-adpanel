@@ -167,6 +167,11 @@ const validateCampaignAndReturnErrors = (config: CampaignsConfig, campaign: Camp
   let budgetError = false;
   let cpmError = false;
   let cpaError = false;
+  console.log('campaign.basicInformation.dateEnd')
+  console.log(campaign.basicInformation.dateEnd)
+  console.log(JSON.stringify(config))
+  console.log(JSON.stringify(campaign))
+  console.log(JSON.stringify(user))
   const isOutdated =
     campaign.basicInformation.dateEnd && moment(new Date()) > moment(campaign.basicInformation.dateEnd);
   const isDirectDeal = checkDirectedDeal(campaign);
