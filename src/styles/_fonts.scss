@@ -1,25 +1,35 @@
 @use 'sass:math';
 
 $fonts: (
-        thin: 'Montserrat-Thin',
-        extraLight: 'Montserrat-ExtraLight',
-        light: 'Montserrat-Light',
-        normal: 'Montserrat-Regular',
-        medium: 'Montserrat-Medium',
-        semiBold: 'Montserrat-SemiBold',
-        bold: 'Montserrat-Bold',
-        extraBold: 'Montserrat-ExtraBold',
-        black: 'Montserrat-Black',
+        //thin: 'Montserrat-Thin',
+        //extraLight: 'Montserrat-ExtraLight',
+        //light: 'Montserrat-Light',
+        //normal: 'Montserrat-Regular',
+        //medium: 'Montserrat-Medium',
+        //semiBold: 'Montserrat-SemiBold',
+        //bold: 'Montserrat-Bold',
+        //extraBold: 'Montserrat-ExtraBold',
+        //black: 'Montserrat-Black',
+        //
+        //interThin: 'inter-Thin',
+        //interExtraLight: 'inter-ExtraLight',
+        //interLight: 'inter-Light',
+        //interNormal: 'inter-Regular',
+        //interMedium: 'inter-Medium',
+        //interSemiBold: 'inter-SemiBold',
+        //interBold: 'inter-Bold',
+        //interExtraBold: 'inter-ExtraBold',
+        //interBlack: 'inter-Black'
 
-        interThin: 'inter-Thin',
-        interExtraLight: 'inter-ExtraLight',
-        interLight: 'inter-Light',
-        interNormal: 'inter-Regular',
-        interMedium: 'inter-Medium',
-        interSemiBold: 'inter-SemiBold',
-        interBold: 'inter-Bold',
-        interExtraBold: 'inter-ExtraBold',
-        interBlack: 'inter-Black'
+        thin: 'inter-Thin',
+        extraLight: 'inter-ExtraLight',
+        light: 'inter-Light',
+        normal: 'inter-Regular',
+        medium: 'inter-Medium',
+        semiBold: 'inter-SemiBold',
+        bold: 'inter-Bold',
+        extraBold: 'inter-ExtraBold',
+        black: 'inter-Black'
 );
 
 @mixin font-face($font-name) {
