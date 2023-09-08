@@ -1,5 +1,6 @@
 @import '../../styles.scss';
 
+
 .link{
 
 }
@@ -9,7 +10,7 @@
   background-color: #BF289D;
   position: relative;
   overflow-y: scroll;
-
+  font-family: inter-Black,sans-serif;
   &-wrapper {
     height: 90%;
     width: 100vw;
@@ -138,7 +139,7 @@
 
 .ap-heading--hero{
   font-size: 4rem;
-  font-family: Lato-Black,sans-serif;
+
   font-style: normal;
   font-weight: 400;
   line-height: 1.11;
@@ -146,7 +147,7 @@
 
 .ap-heading{
   font-size: 4rem;
-  font-family: Lato-Black,sans-serif;
+
   font-style: normal;
   font-weight: 400;
   line-height: 1.11;
