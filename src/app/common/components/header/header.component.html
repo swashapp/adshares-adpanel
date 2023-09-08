@@ -116,12 +116,6 @@
             <fa-icon [icon]="faComments" class="ap-icon ap-icon--prepend"></fa-icon>
             <a href="{{ supportChat }}" target="_blank" rel="noopener nofollow noreferrer">Community chat</a>
           </li>
-          <li class="settings-menu__item" *ngIf="supportTelegram">
-            <fa-icon [icon]="faPaperPlane" class="ap-icon ap-icon--prepend"></fa-icon>
-            <a href="https://t.me/{{ supportTelegram }}" target="_blank" rel="noopener nofollow noreferrer"
-              >@{{ supportTelegram }}</a
-            >
-          </li>
           <li class="settings-menu__item" *ngIf="supportEmail">
             <fa-icon [icon]="faEnvelope" class="ap-icon ap-icon--prepend"></fa-icon>
             <a href="mailto:{{ supportEmail }}" target="_blank" rel="noopener nofollow noreferrer">{{
