@@ -21,15 +21,15 @@ $fonts: (
         //interExtraBold: 'inter-ExtraBold',
         //interBlack: 'inter-Black'
 
-        thin: 'inter-Thin',
-        extraLight: 'inter-ExtraLight',
-        light: 'inter-Light',
-        normal: 'inter-Regular',
-        medium: 'inter-Medium',
-        semiBold: 'inter-SemiBold',
-        bold: 'inter-Bold',
-        extraBold: 'inter-ExtraBold',
-        black: 'inter-Black'
+        thin: 'Inter-Thin',
+        extraLight: 'Inter-ExtraLight',
+        light: 'Inter-Light',
+        normal: 'Inter-Regular',
+        medium: 'Inter-Medium',
+        semiBold: 'Inter-SemiBold',
+        bold: 'Inter-Bold',
+        extraBold: 'Inter-ExtraBold',
+        black: 'Inter-Black'
 );
 
 @mixin font-face($font-name) {
